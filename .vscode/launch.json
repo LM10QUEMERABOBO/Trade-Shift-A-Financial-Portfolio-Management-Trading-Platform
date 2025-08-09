@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "type": "android",
+            "request": "launch",
+            "name": "Android Launch",
+            "appSrcRoot": "${workspaceRoot}/app/src/main",
+            "apkFile": "${workspaceRoot}/app/build/outputs/apk/debug/MainAcitvity.apk",
+            "adbPort": 5037
+        },
+        {
+            "type": "android",
+            "request": "attach",
+            "name": "Android Attach",
+            "appSrcRoot": "${workspaceRoot}/app/src/main",
+            "adbPort": 5037,
+            "processId": "${command:PickAndroidProcess}"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-TradeshiftApplication<Tradeshift>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.Tradeshift.TradeshiftApplication",
+            "projectName": "Tradeshift",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
