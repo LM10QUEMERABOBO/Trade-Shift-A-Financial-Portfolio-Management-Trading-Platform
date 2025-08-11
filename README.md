@@ -1,8 +1,12 @@
 **Project 1: "TradeShift": A Financial Portfolio Management & Trading Platform****
+
+
 **Introduction:**
 •	TradeShift is an advanced, industry-ready financial platform designed to provide investors with a seamless and unified experience for managing their investments. It provides the efficiencies by eliminating the juggling multiple fragmented financial tools by collecting  all essential trading and portfolio management features into a single, secure environment.
 •	The platform allows users to connect multiple brokerage accounts securely, enabling them to access a centralized, real-time dashboard that displays the performance of their entire investment portfolio.
 •	The platform’s built-in charting and analytics tools empower investors to perform detailed technical and fundamental analysis, using features like candlestick charts, moving averages, RSI indicators, and custom data overlays.
+
+
 
 **Features of the system:**
 This is where your project stands out — integrating and enhancing existing features into one unified, enterprise-grade platform.
