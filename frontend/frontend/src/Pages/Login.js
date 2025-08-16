@@ -5,17 +5,34 @@ import "../App.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // For showing errors
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/dashboard"); // will replace with backend auth later
+
+    try {
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        // If login is successful, navigate to dashboard
+        navigate("/dashboard");
+      } else {
+        // Show error from backend
+        const errorMessage = await response.text();
+        setError(errorMessage);
+      }
+    } catch (err) {
+      setError("Unable to connect to the server!");
+    }
   };
 
   return (
-    <div
-      style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}
-    >
+    <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
       <form
         onSubmit={handleSubmit}
         style={{
@@ -25,19 +42,16 @@ function Login() {
           boxShadow: "0 0 10px rgba(0,0,0,0.1)",
         }}
       >
-        <h2>Sign In</h2>
+        <h2>Login</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>} {/* Show errors */}
+
         <input
           type="email"
           placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={{
-            display: "block",
-            marginBottom: "10px",
-            padding: "8px",
-            width: "250px",
-          }}
+          style={{ display: "block", marginBottom: "10px", padding: "8px", width: "250px" }}
         />
         <input
           type="password"
@@ -45,12 +59,7 @@ function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={{
-            display: "block",
-            marginBottom: "10px",
-            padding: "8px",
-            width: "250px",
-          }}
+          style={{ display: "block", marginBottom: "10px", padding: "8px", width: "250px" }}
         />
         <button
           type="submit"
@@ -62,7 +71,7 @@ function Login() {
             border: "none",
           }}
         >
-          Submit
+          Login
         </button>
         <p style={{ marginTop: "10px" }}>
           Don't have an account?{" "}
@@ -70,7 +79,7 @@ function Login() {
             style={{ color: "blue", cursor: "pointer" }}
             onClick={() => navigate("/signup")}
           >
-            Sign up
+            Sign Up
           </span>
         </p>
       </form>

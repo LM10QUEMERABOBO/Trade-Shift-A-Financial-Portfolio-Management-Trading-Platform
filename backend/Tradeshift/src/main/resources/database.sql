@@ -1,0 +1,68 @@
+-- Create Database
+CREATE DATABASE IF NOT EXISTS tradeshift;
+USE tradeshift;
+
+-- Users Table (Login/Register + Roles)
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('ADMIN', 'TRADER', 'VIEWER') DEFAULT 'TRADER',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Portfolio Table (Assets Owned)
+CREATE TABLE IF NOT EXISTS portfolio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    asset_symbol VARCHAR(20) NOT NULL,
+    asset_name VARCHAR(100) NOT NULL,
+    quantity DECIMAL(15,4) NOT NULL,
+    avg_buy_price DECIMAL(15,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Transactions Table (Buy/Sell History)
+CREATE TABLE IF NOT EXISTS transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    asset_symbol VARCHAR(20) NOT NULL,
+    transaction_type ENUM('BUY', 'SELL') NOT NULL,
+    quantity DECIMAL(15,4) NOT NULL,
+    price DECIMAL(15,2) NOT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Watchlist Table
+CREATE TABLE IF NOT EXISTS watchlist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    asset_symbol VARCHAR(20) NOT NULL,
+    asset_name VARCHAR(100) NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Market News Table
+CREATE TABLE IF NOT EXISTS market_news (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    source VARCHAR(100),
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Price Alerts Table
+CREATE TABLE IF NOT EXISTS price_alerts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    asset_symbol VARCHAR(20) NOT NULL,
+    target_price DECIMAL(15,2) NOT NULL,
+    alert_type ENUM('ABOVE', 'BELOW') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
