@@ -1,19 +1,14 @@
 import React from "react";
+import "./Sidebar.css";
 
-function Sidebar() {
+function Sidebar({ onSelect }) {
   return (
-    <div
-      style={{
-        width: "200px",
-        background: "#eeeeee",
-        padding: "10px",
-        height: "100vh",
-      }}
-    >
-      <p>Dashboard</p>
-      <p>Portfolio</p>
-      <p>Orders</p>
-      <p>Settings</p>
+    <div className="sidebar">
+      <ul>
+        <li onClick={() => onSelect("portfolio")}>Portfolio</li>
+        <li onClick={() => onSelect("profile")}>Profile</li>
+        <li onClick={() => onSelect("settings")}>Settings</li>
+      </ul>
     </div>
   );
 }

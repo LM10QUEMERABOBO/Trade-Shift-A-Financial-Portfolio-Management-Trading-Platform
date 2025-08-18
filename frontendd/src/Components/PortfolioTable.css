@@ -1,0 +1,58 @@
+.portfolio-container {
+    margin-top: 20px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 15px;
+}
+
+.search-box {
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 300px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-box:focus {
+    border-color: #1976d2;
+    box-shadow: 0px 0px 5px rgba(25, 118, 210, 0.5);
+}
+
+.portfolio-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.portfolio-table thead {
+    background: #1976d2;
+    color: white;
+}
+
+.portfolio-table th,
+.portfolio-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.portfolio-table tbody tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+.portfolio-table tbody tr:hover {
+    background: #e3f2fd;
+    transition: background 0.3s ease-in-out;
+}
