@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
+import PortfolioTable from "./Components/PortfolioTable";
 
 function Dashboard() {
+  const [activePage, setActivePage] = useState("portfolio"); // default page
+
   return (
     <div>
       <Navbar />
-      <div className="container">
-        <Sidebar />
-        <div className="main">
-          <h2>Portfolio Value: $120,000</h2>
-          <p>Example chart and assets will be added here.</p>
+      <div style={{ display: "flex" }}>
+        {/* Sidebar on left */}
+        <Sidebar onSelect={setActivePage} />
+
+        {/* Main content on right */}
+        <div style={{ flex: 1, padding: "20px" }}>
+          {activePage === "portfolio" && <PortfolioTable />}
+          {activePage === "profile" && <h2>User Profile Coming Soon...</h2>}
+          {activePage === "settings" && <h2>Settings Page Coming Soon...</h2>}
         </div>
       </div>
     </div>

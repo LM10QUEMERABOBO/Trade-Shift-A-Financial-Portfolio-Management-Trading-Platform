@@ -1,0 +1,18 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000;
+}
+
+.logo {
+    height: 90px;
+    width: auto;
+    margin-right: 12px;
+}
+
+.app-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}

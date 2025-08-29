@@ -1,0 +1,11 @@
+.main {
+    flex: 1;
+    padding: 20px;
+    background: #f4f6f9;
+    min-height: 100vh;
+}
+
+h2 {
+    color: #1976d2;
+    margin-bottom: 10px;
+}
