@@ -1,6 +1,7 @@
 package com.example.Tradeshift.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -11,29 +12,28 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long portfolioId;
-    private String symbol;
     private Long userId;
-    private Double quantity;
     private String assetSymbol;
-    private Double price;
-    private String transaction_type;
-    private String side; // BUY or SELL
-    private Instant timestamp;
+    private TransactionType transactionType;
+    private BigDecimal quantity;
+    private BigDecimal price;
+    private Instant transactionDate;
+    public enum TransactionType {
+        BUY, SELL
+    }
 
-    // No-args constructor
+    // Default constructor
     public Transaction() {}
 
-    // All-args constructor
-    public Transaction(Long id, Long portfolioId, String symbol, Double quantity,
-                       Double price, String side, Instant timestamp) {
-        this.id = id;
-        this.portfolioId = portfolioId;
-        this.symbol = symbol;
+    // Parameterized constructor
+    public Transaction(Long userId, String assetSymbol, TransactionType transactionType,
+                       BigDecimal quantity, BigDecimal price, Instant transactionDate) {
+        this.userId = userId;
+        this.assetSymbol = assetSymbol;
+        this.transactionType = transactionType;
         this.quantity = quantity;
         this.price = price;
-        this.side = side;
-        this.timestamp = timestamp;
+        this.transactionDate = transactionDate;
     }
 
     // Getters and Setters
@@ -54,34 +54,6 @@ public class Transaction {
         this.userId = userId;
     }
 
-    public Long getPortfolioId() {
-        return portfolioId;
-    }
-
-    public void setPortfolioId(Long portfolioId) {
-        this.portfolioId = portfolioId;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
     public String getAssetSymbol() {
         return assetSymbol;
     }
@@ -90,46 +62,54 @@ public class Transaction {
         this.assetSymbol = assetSymbol;
     }
 
-    public void setTransactionType(String transaction_type) {
-        this.transaction_type= transaction_type;
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
-    public String getTransactionType() {
-        return transaction_type;
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
-    public void setPrice(Double price) {
+    public BigDecimal getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public String getSide() {
-        return side;
+    public Instant getTransactionDate() {
+        return transactionDate;
     }
 
-    public void setSide(String side) {
-        this.side = side;
+    public void setTransactionDate(Instant transactionDate) {
+        this.transactionDate = transactionDate;
     }
 
-    public Instant getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    // toString() method
-
+    // toString() for debugging
     @Override
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
-                ", portfolioId=" + portfolioId +
-                ", symbol='" + symbol + '\'' +
+                ", userId=" + userId +
+                ", assetSymbol='" + assetSymbol + '\'' +
+                ", transactionType=" + transactionType +
                 ", quantity=" + quantity +
                 ", price=" + price +
-                ", side='" + side + '\'' +
-                ", timestamp=" + timestamp +
+                ", transactionDate=" + transactionDate +
                 '}';
+    }
+
+    public void setTransactionType(String type) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setTransactionType'");
     }
 }
