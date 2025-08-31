@@ -1,7 +1,15 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif; */
+  font-family: "Aptos", sans-serif;
   background-color: #f4f6f8;
+}
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #1976d2;
 }
 
 .container {

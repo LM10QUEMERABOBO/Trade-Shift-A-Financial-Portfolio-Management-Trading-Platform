@@ -1,8 +1,10 @@
 
 package com.example.Tradeshift.service;
 
+import com.example.Tradeshift.entity.Analytics;
 // import com.example.Tradeshift.service.MarketDataService;
 import com.example.Tradeshift.entity.Portfolio;
+import com.example.Tradeshift.repository.AnalyticsRepository;
 import com.example.Tradeshift.repository.PortfolioRepository;
 import com.example.Tradeshift.entity.Transaction;
 import com.example.Tradeshift.repository.TransactionRepository;
@@ -19,17 +21,23 @@ public class AnalyticsService {
     private final PortfolioRepository portfolioRepository;
     private final TransactionRepository transactionRepository;
     private final MarketDataService marketDataService;
+    private final AnalyticsRepository analyticsRepository;
 
     public AnalyticsService(PortfolioRepository portfolioRepository,
                             TransactionRepository transactionRepository,
-                            MarketDataService marketDataService) {
+                            MarketDataService marketDataService, 
+                            AnalyticsRepository analyticsRepository) {
         this.portfolioRepository = portfolioRepository;
         this.transactionRepository = transactionRepository;
         this.marketDataService = marketDataService;
+        this.analyticsRepository = analyticsRepository;
     }
     
     // double finalTotalValue= totalValue;
-
+    public void logAction(Long userId, String actionType, String details) {
+        Analytics analytics = new Analytics(userId, actionType, details);
+        analyticsRepository.save(analytics);
+    }
     
     public Map<String, Object> getPortfolioSummary(Long userId) {
         List<Portfolio> holdings = portfolioRepository.findByUserId(userId);

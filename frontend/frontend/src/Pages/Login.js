@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// import Navbar from "../Components/Navbar";
 import "../App.css";
 
 function Login() {
@@ -12,7 +13,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("http://localhost:8081/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -20,7 +21,7 @@ function Login() {
 
       if (response.ok) {
         // If login is successful, navigate to dashboard
-        navigate("/dashboard");
+        navigate("/home");
       } else {
         // Show error from backend
         const errorMessage = await response.text();
@@ -32,7 +33,10 @@ function Login() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+    // <div>
+    //       <Navbar />
+    <div className="login-page">
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <form
         onSubmit={handleSubmit}
         style={{
@@ -42,7 +46,7 @@ function Login() {
           boxShadow: "0 0 10px rgba(0,0,0,0.1)",
         }}
       >
-        <h2>Login</h2>
+        <h2 style={{ color: '#1976d2' }}>Login</h2>
         {error && <p style={{ color: "red" }}>{error}</p>} {/* Show errors */}
 
         <input
@@ -83,6 +87,7 @@ function Login() {
           </span>
         </p>
       </form>
+    </div>
     </div>
   );
 }

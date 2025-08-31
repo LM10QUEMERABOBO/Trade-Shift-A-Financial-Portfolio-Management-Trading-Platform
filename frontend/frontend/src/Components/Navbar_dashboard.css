@@ -1,12 +1,12 @@
 .navbar {
     display: flex;
     align-items: center;
-    padding: 10px 20px;
+    padding: 0px 10px;
     background-color:#1976d2;
 }
 
 .logo {
-    height: 90px;
+    height: 120px;
     width: auto;
     margin-right: 12px;
 }
@@ -19,12 +19,21 @@
 .navbar-button {
   background-color: white;
   color: #1976d2;
-  font-size: 0.75rem; /* Small text */
-  padding: 4px 8px;    /* Small padding */
+  height: 40px;
+  width: 70px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0px 0px;
   border: 1px solid #1976d2;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
+  margin-left: auto; /* pushes button to the right */
+}
+
+.navbar-buttons {
+  margin-left: 1140px; /* pushes this div to the right */
+  display: flex;
+  gap: 10px; /* space between buttons */
 }
 
 .navbar-button:hover {

@@ -1,0 +1,59 @@
+/* Container styling */
+.order-history-container {
+    margin-top: 20px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Title styling */
+.order-history-title {
+  font-size: 20px;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 15px;
+}
+
+/* Table styling */
+.order-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.order-history-table th,
+.order-history-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.order-history-table th {
+  background-color: #1976d2;
+  color:white;
+  font-weight: bold;
+}
+
+/* Row hover effect */
+.order-history-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Order type colors */
+.buy {
+  color: green;
+  font-weight: bold;
+}
+
+.sell {
+  color: red;
+  font-weight: bold;
+}
+
+/* Status colors */
+.filled {
+  color: green;
+  font-weight: bold;
+}

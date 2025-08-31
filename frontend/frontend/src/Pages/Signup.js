@@ -16,7 +16,7 @@ function Signup() {
 
     try {
       // Example API call
-      const response = await fetch("http://localhost:8080/auth/register", {
+      const response = await fetch("http://localhost:8081/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, email, password }),
@@ -34,7 +34,8 @@ function Signup() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+    <div className="login-page">
+    <div style={{ display: "flex", justifyContent: "center"}}>
       <form
         onSubmit={handleSubmit}
         style={{
@@ -44,7 +45,7 @@ function Signup() {
           boxShadow: "0 0 10px rgba(0,0,0,0.1)",
         }}
       >
-        <h2>Sign Up</h2>
+        <h2 style={{ color: '#1976d2' }}>Sign Up</h2>
         {error && <p style={{ color: "red" }}>{error}</p>} {/* Show error */}
         
         <input
@@ -101,6 +102,7 @@ function Signup() {
           </span>
         </p>
       </form>
+    </div>
     </div>
   );
 }

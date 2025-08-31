@@ -16,16 +16,25 @@ import java.math.BigDecimal;
 public class PortfolioService {
 
    private final PortfolioRepository portfolioRepository;
-   private final MarketDataService marketDataService;
+    private final MarketDataService marketDataService;
+    private final AnalyticsService analyticsService; // <-- Add this
 
-//    @Autowired
-   public PortfolioService(PortfolioRepository portfolioRepository, MarketDataService marketDataService) {
-       this.portfolioRepository = portfolioRepository;
-       this.marketDataService = marketDataService;
-   }
+    public PortfolioService(PortfolioRepository portfolioRepository,
+                            MarketDataService marketDataService,
+                            AnalyticsService analyticsService) { // <-- Include here
+        this.portfolioRepository = portfolioRepository;
+        this.marketDataService = marketDataService;
+        this.analyticsService = analyticsService;
+    }
 
    public PortfolioSummaryDTO getPortfolioSummary(Long userId) {
     List<Portfolio> holdings = portfolioRepository.findByUserId(userId);
+
+     analyticsService.logAction(
+        userId,
+        "PORTFOLIO_VIEWED",
+        "User viewed portfolio with " + holdings.size() + " holdings"
+    );
 
     BigDecimal totalValue = BigDecimal.ZERO;
     BigDecimal totalPnL = BigDecimal.ZERO;

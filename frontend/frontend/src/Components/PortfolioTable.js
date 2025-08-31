@@ -1,23 +1,30 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./PortfolioTable.css";
 
 const PortfolioTable = () => {
   const [portfolio] = useState([
-    { name: "AAPL", quantity: 10, price: 200 },
-    { name: "TSLA", quantity: 5, price: 700 },
-    { name: "AMZN", quantity: 3, price: 3200 },
-    { name: "MSFT", quantity: 8, price: 280 },
+    { symbol: "AAPL", name: "Apple", price: 200, volume: 100000 },
+    { symbol: "TSLA", name: "Tesla", price: 700, volume: 200000 },
+    { symbol: "AMZN", name: "Amazon", price: 3200, volume: 130000 },
+    { symbol: "MSFT", name: "Microsoft", price: 280, volume: 190000 },
   ]);
 
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const filtered = portfolio.filter((stock) =>
     stock.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Click handler function for rows
+  const handleRowClick = (stockSymbol) => {
+    navigate(`/trade/${stockSymbol}`);
+  };
+
   return (
     <div className="portfolio-container">
-      <h3 className="portfolio-title">🔍 Search Portfolio</h3>
+      <h3 className="portfolio-title">🔍 Search Assets</h3>
 
       {/* Search Bar */}
       <input
@@ -33,18 +40,23 @@ const PortfolioTable = () => {
         <thead>
           <tr>
             <th>Stock</th>
-            <th>Quantity</th>
-            <th>Price ($)</th>
-            <th>Total Value ($)</th>
+            <th>Name</th>
+            <th>Market Price($)</th>
+            <th>Total Volume</th>
           </tr>
         </thead>
         <tbody>
           {filtered.map((stock, index) => (
-            <tr key={index}>
+            <tr
+              key={index}
+              data-stock={stock.symbol}
+              onClick={() => handleRowClick(stock.symbol)}
+              style={{ cursor: "pointer" }}
+            >
+              <td>{stock.symbol}</td>
               <td>{stock.name}</td>
-              <td>{stock.quantity}</td>
               <td>{stock.price}</td>
-              <td>{stock.quantity * stock.price}</td>
+              <td>{stock.volume}</td>
             </tr>
           ))}
         </tbody>
