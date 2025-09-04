@@ -23,8 +23,11 @@ APIs: Finnhub (for market data)
 We thank our amazing contributors for building this project together 💙
 
 Krish Soni
+
 Nithin Khammampati
+
 Mansi Walunj
+
 Lipa Sheikh
 
 🚀 Getting Started
