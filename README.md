@@ -6,13 +6,9 @@ Built with Spring Boot (backend) and React (frontend), it provides secure authen
 ✨ Features
 
 📊 Portfolio Management – Track assets, investments, and performance.
-
 🔐 Secure Authentication – JWT-based login & role-based access.
-
 📈 Market Integration – Real-time stock/crypto data with APIs.
-
 💼 Trade Execution – Place, manage, and analyze trades.
-
 📑 Reports & Insights – Gain actionable insights with analytics.
 
 🛠️ Tech Stack
