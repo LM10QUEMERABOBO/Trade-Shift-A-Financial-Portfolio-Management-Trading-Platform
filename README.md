@@ -14,23 +14,17 @@ Built with Spring Boot (backend) and React (frontend), it provides secure authen
 🛠️ Tech Stack
 
 Backend: Java, Spring Boot, JPA, MySQL
-
-Frontend: React, Tailwind CSS, shadcn/ui
-
+Frontend: React, Tailwind CSS
 Security: Spring Security, JWT
-
-APIs: Finnhub / Yahoo Finance (for market data)
+APIs: Finnhub (for market data)
 
 👩‍💻 Contributors
 
 We thank our amazing contributors for building this project together 💙
 
 Krish Soni
-
 Nithin Khammampati
-
 Mansi Walunj
-
 Lipa Sheikh
 
 🚀 Getting Started
