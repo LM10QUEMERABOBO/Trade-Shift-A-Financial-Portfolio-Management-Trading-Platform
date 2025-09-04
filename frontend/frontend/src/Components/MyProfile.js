@@ -1,17 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const UpdateProfile = () => {
-  // Initial profile data which can be fetched from an API
-  const [profile, setProfile] = useState({
-    firstName: 'Krish',
-    lastName: 'Soni',
-    email: 'krishsoni198@gmail.com',
-    phone: '8320302446',
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
   });
-
-  const [formData, setFormData] = useState(profile);
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(true);
 
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId"); // Must be set at login
+  const storedUser = localStorage.getItem("username");
+  // 🔹 Fetch user data on page load
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8081/api/users/${storedUser}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setFormData(data);
+        } else {
+          setMessage("Failed to load user data.");
+        }
+      } catch (error) {
+        setMessage("Error fetching user data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [userId, token]);
+
+  // 🔹 Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -20,97 +49,95 @@ const UpdateProfile = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // 🔹 Handle form submit (update user)
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would usually make an API call to update the profile in backend
-    setProfile(formData);
-    setMessage('Profile updated successfully!');
+    try {
+      const response = await fetch(`http://localhost:8081/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setMessage("Profile updated successfully!");
+      } else {
+        setMessage("Failed to update profile.");
+      }
+    } catch (err) {
+      setMessage("Error while updating profile.");
+    }
   };
 
+  if (loading) {
+    return <p>Loading profile...</p>;
+  }
+
   return (
-    <div className="update-profile-container" style={{boxShadow:'0px 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', background: '#f8f9fa', borderRadius: '8px', maxWidth: '600px', margin: '0 auto'}}>
+    <div
+      className="update-profile-container"
+      style={{
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+        padding: '20px',
+        background: '#f8f9fa',
+        borderRadius: '8px',
+        maxWidth: '600px',
+        margin: '0 auto',
+      }}
+    >
       <h2 style={{ color: '#2c7be5', marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
-        <span className="material-icons" style={{ marginRight: '8px' }}>My</span> Profile
+        My Profile
       </h2>
-      
+
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="name" style={{ fontWeight: '600' }}>Firstname:</label>
+          <label style={{ fontWeight: '600' }}>First Name:</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.firstName}
+            name="firstName"
+            value={formData.firstName || ''}
             onChange={handleChange}
-            style={{
-              width: '100%',
-              padding: '8px',
-              marginTop: '5px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              boxSizing: 'border-box'
-            }}
             required
+            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           />
         </div>
 
         <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="name" style={{ fontWeight: '600' }}>Lastname:</label>
+          <label style={{ fontWeight: '600' }}>Last Name:</label>
           <input
             type="text"
-            id="name"
-            name="lastname"
-            value={formData.lastName}
+            name="lastName"
+            value={formData.lastName || ''}
             onChange={handleChange}
-            style={{
-              width: '100%',
-              padding: '8px',
-              marginTop: '5px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              boxSizing: 'border-box'
-            }}
             required
+            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           />
         </div>
 
         <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="email" style={{ fontWeight: '600' }}>Email:</label>
+          <label style={{ fontWeight: '600' }}>Email:</label>
           <input
             type="email"
-            id="email"
             name="email"
-            value={formData.email}
+            value={formData.email || ''}
             onChange={handleChange}
-            style={{
-              width: '100%',
-              padding: '8px',
-              marginTop: '5px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              boxSizing: 'border-box'
-            }}
             required
+            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           />
         </div>
 
         <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="phone" style={{ fontWeight: '600' }}>Phone:</label>
+          <label style={{ fontWeight: '600' }}>password:</label>
           <input
             type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
+            name="password"
+            value={formData.password || ''}
             onChange={handleChange}
-            style={{
-              width: '100%',
-              padding: '8px',
-              marginTop: '5px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              boxSizing: 'border-box'
-            }}
             required
+            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           />
         </div>
 
@@ -122,7 +149,7 @@ const UpdateProfile = () => {
             padding: '10px 20px',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Save Changes

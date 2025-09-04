@@ -23,7 +23,12 @@ function Signup() {
       });
 
       if (response.ok) {
-        navigate("/dashboard");
+        const data = await response.json();
+        localStorage.setItem("fullname", data.firstName +" "+ data.lastName);
+        navigate("/");
+        // const data = await response.json();
+        // alert("Signup response:", data);
+        alert("Signup successful!, Login now!");
       } else {
         const errorMessage = await response.text();
         setError(errorMessage);

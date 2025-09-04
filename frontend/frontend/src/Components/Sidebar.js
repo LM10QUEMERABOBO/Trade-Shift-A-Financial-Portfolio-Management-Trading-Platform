@@ -36,8 +36,8 @@ function Sidebar({ onSelect }) {
         <li onClick={() => onSelect("logout")}>
           <LogOut size={14} /> Logout
         </li>
-        {/* <li onClick={() => onSelect("settings")}>
-          <Settings size={18} /> Settings
+        {/* <li onClick={() => onSelect("marketNews")}>
+          <marketNews size={18} /> Market News
         </li> */}
       </ul>
     </div>

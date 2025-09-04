@@ -1,12 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./OrderHistory.css"; // Reuse same CSS styling
 
 const Watchlist = () => {
-  const watchlist = [
-    { id: 1, symbol: "AAPL", price: 182.5 },
-    { id: 2, symbol: "TSLA", price: 700 },
-    { id: 3, symbol: "AMZN", price: 3200 },
-  ];
+  const userId = localStorage.getItem("userId"); // ✅ Correct variable name
+  const [watchlist, setWatchlist] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Fetch watchlist data from API
+  const fetchWatchlist = async () => {
+    try {
+      const res = await fetch(`http://localhost:8081/api/watchlist/user/${userId}`);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+      const data = await res.json();
+      console.log("Watchlist API Response:", data); // 🔍 Debugging
+
+      // ✅ Ensure it's always an array
+      setWatchlist(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching watchlist:", error);
+      setWatchlist([]); // ✅ Set empty array on error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWatchlist();
+  }, []);
+
+  if (loading) {
+    return <p>Loading watchlist...</p>;
+  }
+
+  if (!watchlist.length) {
+    return <p>No stocks in your watchlist.</p>;
+  }
 
   return (
     <div className="order-history-container">
@@ -16,15 +45,15 @@ const Watchlist = () => {
           <tr>
             <th>ID</th>
             <th>Stock Symbol</th>
-            <th>Price ($)</th>
+            {/* <th>Stock Name</th> */}
           </tr>
         </thead>
         <tbody>
-          {watchlist.map((stock) => (
-            <tr key={stock.id}>
-              <td>{stock.id}</td>
-              <td>{stock.symbol}</td>
-              <td>{stock.price}</td>
+          {watchlist.map((stock, index) => (
+            <tr key={stock.id || index}>
+              <td>{stock.id ?? "N/A"}</td>
+              <td>{stock.assetSymbol ?? "N/A"}</td>
+              {/* <td>{stock.assetName ?? "N/A"}</td> */}
             </tr>
           ))}
         </tbody>

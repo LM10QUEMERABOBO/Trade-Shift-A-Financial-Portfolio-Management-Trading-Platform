@@ -20,8 +20,12 @@ function Login() {
       });
 
       if (response.ok) {
-        // If login is successful, navigate to dashboard
-        navigate("/home");
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("username", data.email);
+
+        navigate("/dashboard");
       } else {
         // Show error from backend
         const errorMessage = await response.text();

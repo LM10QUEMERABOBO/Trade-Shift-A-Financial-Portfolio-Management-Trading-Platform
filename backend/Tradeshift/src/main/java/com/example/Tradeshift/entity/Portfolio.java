@@ -28,7 +28,7 @@ public class Portfolio {
     private BigDecimal avgBuyPrice;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt;
+    private Instant createdAt= Instant.now();
 
     // ---- Getters and Setters ----
 
@@ -87,4 +87,16 @@ public class Portfolio {
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
+
+
+    // @PrePersist
+    // protected void onCreate() {
+    //     this.createdAt = Instant.now();
+    //     // this.updatedAt = Instant.now();
+    // }
+
+    // @PreUpdate
+    // protected void onUpdate() {
+    //     this.updatedAt = Instant.now();
+    // }
 }

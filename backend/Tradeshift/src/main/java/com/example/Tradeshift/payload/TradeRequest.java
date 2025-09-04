@@ -6,17 +6,18 @@ public class TradeRequest {
     private String type;  // BUY or SELL
     private Double quantity;
     private Double price;
-
+    private String assetName; 
     // Constructors
     public TradeRequest() {
     }
 
-    public TradeRequest(Long userId, String symbol, String type, Double quantity, Double price) {
+    public TradeRequest(Long userId, String symbol,String assetName, String type, Double quantity, Double price) {
         this.userId = userId;
         this.symbol = symbol;
         this.type = type;
         this.quantity = quantity;
         this.price = price;
+        this.assetName=assetName;
     }
 
     // Getters and Setters
@@ -35,7 +36,13 @@ public class TradeRequest {
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
+    public String getAssetName() {
+     return assetName;
+    }
 
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
+    }
     public String getType() {
         return type;
     }

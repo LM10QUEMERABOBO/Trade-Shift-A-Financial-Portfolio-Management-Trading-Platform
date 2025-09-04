@@ -10,8 +10,6 @@ import com.example.Tradeshift.repository.TradeRepository;
 import com.example.Tradeshift.repository.TransactionRepository;
 
 import jakarta.transaction.Transactional;
-
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -26,17 +24,22 @@ public class TradeService {
     private final PortfolioRepository portfolioRepository;
     private final TransactionRepository transactionRepository;
 
-    // @Autowired
-    public TradeService(TradeRepository tradeRepo, PortfolioRepository portfolioRepository,TransactionRepository transactionRepository) {
+    public TradeService(TradeRepository tradeRepo,
+                        PortfolioRepository portfolioRepository,
+                        TransactionRepository transactionRepository) {
         this.tradeRepo = tradeRepo;
         this.portfolioRepository = portfolioRepository;
-        this.transactionRepository=transactionRepository;
+        this.transactionRepository = transactionRepository;
     }
 
-    @Transactional  
+    /**
+     * Places a trade order (BUY or SELL) and updates portfolio and transaction records.
+     */
+    @Transactional
     public Trade placeOrder(TradeRequest req) {
         validateTradeRequest(req);
 
+        // Create Trade entity
         Trade trade = new Trade();
         trade.setUserId(req.getUserId());
         trade.setAssetSymbol(req.getSymbol());
@@ -45,44 +48,58 @@ public class TradeService {
         trade.setPrice(req.getPrice());
         trade.setStatus("FILLED");
 
+        // Update portfolio and record transaction
         updatePortfolio(req);
         recordTransaction(req);
+
         return tradeRepo.save(trade);
     }
 
- private void recordTransaction(TradeRequest req) {
-    Transaction transaction = new Transaction();
-    transaction.setUserId(req.getUserId());
-    transaction.setAssetSymbol(req.getSymbol());
-    transaction.setTransactionType(
-        TransactionType.valueOf(req.getType().toUpperCase())
-    );
-    transaction.setQuantity(BigDecimal.valueOf(req.getQuantity())); // Keep actual quantity
-    transaction.setPrice(BigDecimal.valueOf(req.getPrice())); // Price per unit
-    transaction.setTransactionDate(Instant.now()); // Set timestamp
+    /**
+     * Records a transaction entry for auditing and history.
+     */
+    private void recordTransaction(TradeRequest req) {
+        Transaction transaction = new Transaction();
+        transaction.setUserId(req.getUserId());
+        transaction.setAssetSymbol(req.getSymbol());
+        // transaction.setAssetName(req.getAssetName());
+        transaction.setTransactionType(TransactionType.valueOf(req.getType().toUpperCase()));
+        transaction.setQuantity(BigDecimal.valueOf(req.getQuantity()));
+        transaction.setPrice(BigDecimal.valueOf(req.getPrice()));
+        transaction.setTransactionDate(Instant.now());
 
-    transactionRepository.save(transaction);
-}
+        transactionRepository.save(transaction);
+    }
 
-
-
+    /**
+     * Validates trade request for correctness.
+     */
     private void validateTradeRequest(TradeRequest req) {
-        if (req.getQuantity() <= 0 || req.getPrice() <= 0) {
+        if (req.getQuantity() == null || req.getQuantity() <= 0 ||
+            req.getPrice() == null || req.getPrice() <= 0) {
             throw new IllegalArgumentException("Quantity and price must be greater than zero.");
         }
 
         if (!"BUY".equalsIgnoreCase(req.getType()) && !"SELL".equalsIgnoreCase(req.getType())) {
             throw new IllegalArgumentException("Invalid order type: must be BUY or SELL.");
         }
+
+        // if (req.getAssetName() == null || req.getAssetName().isBlank()) {
+        //     throw new IllegalArgumentException("Asset name cannot be null or empty.");
+        // }
     }
 
+    /**
+     * Updates user's portfolio with the new trade details.
+     */
     private void updatePortfolio(TradeRequest req) {
         Portfolio portfolio = portfolioRepository.findByUserIdAndAssetSymbol(
-            req.getUserId(), req.getSymbol()
+                req.getUserId(), req.getSymbol()
         ).orElseGet(() -> {
             Portfolio p = new Portfolio();
             p.setUserId(req.getUserId());
             p.setAssetSymbol(req.getSymbol());
+            p.setAssetName(req.getAssetName()); // ✅ Fix: set asset name
             p.setQuantity(BigDecimal.ZERO);
             p.setAvgBuyPrice(BigDecimal.ZERO);
             return p;
@@ -104,7 +121,8 @@ public class TradeService {
                 throw new IllegalArgumentException("Insufficient quantity to sell.");
             }
             portfolio.setQuantity(oldQty.subtract(reqQty));
-            // Optionally reset avg buy price if holdings become zero
+
+            // Reset avg price if no holdings left
             if (portfolio.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
                 portfolio.setAvgBuyPrice(BigDecimal.ZERO);
             }
@@ -113,6 +131,9 @@ public class TradeService {
         portfolioRepository.save(portfolio);
     }
 
+    /**
+     * Returns the trade history for a given user.
+     */
     public List<Trade> getOrderHistory(Long userId) {
         return tradeRepo.findByUserId(userId);
     }

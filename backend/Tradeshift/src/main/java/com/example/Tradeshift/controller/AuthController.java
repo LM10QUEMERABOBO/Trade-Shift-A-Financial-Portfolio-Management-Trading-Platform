@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -29,9 +30,17 @@ public class AuthController {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
+        // Load user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+
+        // Generate token
         String token = jwtService.generateToken(userDetails.getUsername());
-        return new AuthResponse(token);
+
+        // Fetch user from DB to get ID
+        var user = userService.findByEmail(request.getEmail());
+
+    // Return token + userId + email
+    return new AuthResponse(token, user.getId(), user.getEmail());
     }
 
     @PostMapping("/register")

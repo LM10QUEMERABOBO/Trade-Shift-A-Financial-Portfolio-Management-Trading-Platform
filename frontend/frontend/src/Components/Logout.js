@@ -6,9 +6,13 @@ const Logout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear user session logic here
+    // alert("Logged out successfully!");
+    // navigate("/"); 
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     alert("Logged out successfully!");
-    navigate("/"); 
+    navigate("/");
   };
 
   return (

@@ -1,29 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./OrderHistory.css"; // Reuse same CSS
 
 const Transactions = () => {
-  const transactions = [
-    {
-      id: 1,
-      user_id: 1,
-      asset_symbol: "AAPL",
-      transaction_type: 1, // SELL
-      quantity: 5.0,
-      price: 182.5,
-      transaction_date: "2025-08-30 11:54:59",
-    },
-    {
-      id: 2,
-      user_id: 1,
-      asset_symbol: "AAPL",
-      transaction_type: 0, // BUY
-      quantity: 10.0,
-      price: 182.5,
-      transaction_date: "2025-08-31 06:21:20",
-    },
-  ];
+  const storedUser = localStorage.getItem("userId");
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const getType = (type) => (type === 1 ? "SELL" : "BUY");
+  const fetchTransactions = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:8081/api/analytics/transactions/${storedUser}`
+      );
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log("Transactions API Response:", data);
+
+      // ✅ Set transactions from 'recent' key
+      if (data && Array.isArray(data.recent)) {
+        setTransactions(data.recent);
+      } else {
+        setTransactions([]);
+      }
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      setTransactions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
+  if (loading) {
+    return <p>Loading transactions...</p>;
+  }
+
+  if (!transactions.length) {
+    return <p>No transactions found.</p>;
+  }
 
   return (
     <div className="order-history-container">
@@ -32,7 +52,6 @@ const Transactions = () => {
         <thead>
           <tr>
             <th>Transaction ID</th>
-            {/* <th>User ID</th> */}
             <th>Stock Symbol</th>
             <th>Transaction Type</th>
             <th>Quantity</th>
@@ -41,17 +60,16 @@ const Transactions = () => {
           </tr>
         </thead>
         <tbody>
-          {transactions.map((txn) => (
-            <tr key={txn.id}>
-              <td>{txn.id}</td>
-              {/* <td>{txn.user_id}</td> */}
-              <td>{txn.asset_symbol}</td>
-              <td className={txn.transaction_type === 1 ? "sell" : "buy"}>
-                {getType(txn.transaction_type)}
+          {transactions.map((txn, index) => (
+            <tr key={txn.id || index}>
+              <td>{txn.id ?? "N/A"}</td>
+              <td>{txn.assetSymbol ?? "N/A"}</td>
+              <td className={txn.transactionType === "SELL" ? "sell" : "buy"}>
+                {txn.transactionType}
               </td>
-              <td>{txn.quantity}</td>
-              <td>{txn.price}</td>
-              <td>{txn.transaction_date}</td>
+              <td>{txn.quantity ?? "N/A"}</td>
+              <td>{txn.price ?? "N/A"}</td>
+              <td>{txn.transactionDate ?? "N/A"}</td>
             </tr>
           ))}
         </tbody>
