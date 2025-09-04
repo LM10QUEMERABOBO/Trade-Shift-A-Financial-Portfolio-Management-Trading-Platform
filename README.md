@@ -1,27 +1,52 @@
-**Project 1: "TradeShift": A Financial Portfolio Management & Trading Platform****
+🚀 Trade-Shift: A Financial Portfolio Management & Trading Platform
 
+Trade-Shift is a full-stack platform designed to simplify financial portfolio management and enable seamless trading operations.
+Built with Spring Boot (backend) and React (frontend), it provides secure authentication, real-time market data, and powerful portfolio analytics.
 
-**Introduction:**
-•	TradeShift is an advanced, industry-ready financial platform designed to provide investors with a seamless and unified experience for managing their investments. It provides the efficiencies by eliminating the juggling multiple fragmented financial tools by collecting  all essential trading and portfolio management features into a single, secure environment.
-•	The platform allows users to connect multiple brokerage accounts securely, enabling them to access a centralized, real-time dashboard that displays the performance of their entire investment portfolio.
-•	The platform’s built-in charting and analytics tools empower investors to perform detailed technical and fundamental analysis, using features like candlestick charts, moving averages, RSI indicators, and custom data overlays.
+✨ Features
 
+📊 Portfolio Management – Track assets, investments, and performance.
 
+🔐 Secure Authentication – JWT-based login & role-based access.
 
-**Features of the system:**
-This is where your project stands out — integrating and enhancing existing features into one unified, enterprise-grade platform.
+📈 Market Integration – Real-time stock/crypto data with APIs.
 
-1. Unified Multi-Brokerage Integration: Securely connect multiple brokerage accounts via APIs (e.g., Plaid).Consolidated view of all assets, cash, and positions across brokers.
+💼 Trade Execution – Place, manage, and analyze trades.
 
-2. Advanced Portfolio Management: Real-time portfolio valuation across all accounts . Detailed metrics: Profit/Loss (daily, monthly, YTD), diversification by asset class/sector. Risk analysis and performance benchmarking.
+📑 Reports & Insights – Gain actionable insights with analytics.
 
-3. Secure Authentication & RBAC: Spring Security with JWT or OAuth2.Role-based access: Admin, Trader, Viewer . Multi-factor authentication and session management.
+🛠️ Tech Stack
 
-4. Live Market Data Feed: Real-time quotes from providers (e.g., Finnhub, IEX Cloud).Historical data for technical analysis.Price alerts and notifications.
+Backend: Java, Spring Boot, JPA, MySQL
 
-5. Trade Execution Engine: Place buy/sell orders directly from the platform. Order status tracking (pending, filled, canceled).Maintain complete transaction history across brokers.
+Frontend: React, Tailwind CSS, shadcn/ui
 
-6. Advanced Analytics Dashboard: Interactive charts (candlestick, moving averages, RSI, MACD).Portfolio heatmaps and allocation breakdown. News integration related to owned or watched assets.
-7. Watchlist with Deep Insights: Custom watchlists with fundamental and technical indicators.AI-powered sentiment analysis from news and social media.
+Security: Spring Security, JWT
 
-8. Security & Compliance: Encrypted storage of sensitive data. Compliance with financial regulations.
+APIs: Finnhub / Yahoo Finance (for market data)
+
+👩‍💻 Contributors
+
+We thank our amazing contributors for building this project together 💙
+
+Krish Soni
+
+Nithin Khammampati
+
+Mansi Walunj
+
+Lipa Sheikh
+
+🚀 Getting Started
+
+Clone the repository
+
+git clone https://github.com/LM10QUEMERABOBO/Trade-Shift-A-Financial-Portfolio-Management-Trading-Platform.git
+
+Navigate to backend & run Spring Boot:
+
+mvn spring-boot:run
+
+Navigate to frontend & start React:
+
+npm install && npm start
